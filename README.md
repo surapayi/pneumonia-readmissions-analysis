@@ -60,16 +60,17 @@ A business intelligence project using real hospital data. I look at which pneumo
 **How to read "vs. overall rate":** "Above" or "Below" means the whole 95% range sits on one side of the overall rate (9.57%). "Not clear" means the range includes it.
 
 ## Data
+### Main dataset
+- **Source:** [Diabetes 130-US Hospitals for Years 1999-2008](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008), UCI Machine Learning Repository.
+- **Dataset:** Clore, J., Cios, K., DeShazo, J., & Strack, B. (2014). *Diabetes 130-US Hospitals for Years 1999-2008* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5230J
 
-- **Source:** [Diabetes 130-US Hospitals for Years 1999-2008](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008), UCI Machine Learning Repository. It has more than 100,000 hospital stays from 130 US hospitals.
+- **Original study:** Strack et al., "Impact of HbA1c Measurement on Hospital Readmission Rates," *BioMed Research International*, 2014.
+- The raw data file is not included in this repo. Download it from the link above.
 - **Original study:** Strack et al., "Impact of HbA1c Measurement on Hospital Readmission Rates," *BioMed Research International*, 2014.
 - The raw data file is not included in this repo. Download it from the link above.
 - **Planned:** CMS Hospital Readmissions Reduction Program (HRRP) pneumonia data, as a national benchmark only. It will not be joined to this dataset.
 
-- **Dataset:** Clore, J., Cios, K., DeShazo, J., & Strack, B. (2014). *Diabetes 130-US Hospitals for Years 1999-2008* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5230J
-- It has more than 100,000 hospital stays from 130 US hospitals.
-- **Original study:** Strack et al., "Impact of HbA1c Measurement on Hospital Readmission Rates," *BioMed Research International*, 2014.
-- The raw data file is not included in this repo. Download it from the link above.
+
 
 ## Definitions
 
