@@ -2,13 +2,17 @@
 
 A business intelligence project using real hospital data. I look at which pneumonia patients are most likely to come back to the hospital within 30 days, based on where they went after discharge and how long they stayed.
 
-**Status:** Phase 1 (Excel exploration) is done. Phase 2 (SQL) and Phase 3 (Power BI dashboard) are in progress.
-
 ---
 
 ## The question
 
 > Among pneumonia patients, which combinations of discharge destination and length of stay have the highest 30-day readmission risk, and which segments should care coordinators follow up with first?
+
+## Dashboard preview
+
+![Power BI dashboard](powerbi/dashboard.png)
+
+*Matrix cells are colored by comparing each segment's 95% range with the overall rate (9.6%). Red = above, green = below, gray = not clear or too few stays.*
 
 **Who this is for:** care coordinators and discharge planners, who decide which patients to call first after discharge.
 
@@ -60,13 +64,17 @@ A business intelligence project using real hospital data. I look at which pneumo
 **How to read "vs. overall rate":** "Above" or "Below" means the whole 95% range sits on one side of the overall rate (9.57%). "Not clear" means the range includes it.
 
 ## Data
-- **Original study:** Strack et al., "Impact of HbA1c Measurement on Hospital Readmission Rates," *BioMed Research International*, 2014.
-- The raw data file is not included in this repo. Download it from the link below.
-- **Planned:** CMS Hospital Readmissions Reduction Program (HRRP) pneumonia data, as a national benchmark only. It will not be joined to this dataset.
+
 ### Main dataset
 - **Source:** [Diabetes 130-US Hospitals for Years 1999-2008](https://archive.ics.uci.edu/dataset/296/diabetes+130-us+hospitals+for+years+1999-2008), UCI Machine Learning Repository.
 - **Dataset:** Clore, J., Cios, K., DeShazo, J., & Strack, B. (2014). *Diabetes 130-US Hospitals for Years 1999-2008* [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5230J
+- The raw data file is not included in this repo. Download it from the link above.
 
+### Original study
+- Strack et al., "Impact of HbA1c Measurement on Hospital Readmission Rates," *BioMed Research International*, 2014.
+
+### Planned benchmark
+- CMS Hospital Readmissions Reduction Program (HRRP) pneumonia data, as a national benchmark only. It will not be joined to this dataset.
 
 ## Definitions
 
@@ -112,10 +120,30 @@ Each rate comes from a limited number of stays, so it could shift by chance. Sma
 - **Small segments.** Several destination-by-LOS segments have only 100 to 200 stays, so rankings between neighbors are not reliable.
 - **No severity or age adjustment.** I did not control for age, number of prior visits, or other factors. This is a possible next step.
 
+## Method (Phase 2: SQL)
+
+I rebuilt the Excel analysis in SQL using SQLite (DB Browser for SQLite). The script is in `sql/pneumonia_analysis.sql`.
+
+1. Imported `diabetic_data.csv` into a table (101,766 rows).
+2. Filtered to pneumonia stays (ICD-9 480-486), which gave 3,982 stays.
+3. Built a `dest_lookup` table with one row per discharge ID, a destination group, and an include flag.
+4. Created a view, `pneumonia_clean`, that joins the lookup table, drops excluded destinations, and adds the LOS band and the 0/1 readmission flag.
+5. Checked the results against Excel: 3,699 stays, 354 readmissions, and matching rates by destination and LOS.
+
+## Method (Phase 3: Power BI)
+
+I used the `pneumonia_clean` data from SQL to build a dashboard.
+
+1. Loaded the cleaned data into Power BI.
+2. Wrote measures for stays, readmissions, and readmission rate.
+3. Calculated each segment's 95% margin of error and compared its range with the overall rate, using the same logic as Excel.
+4. Labeled each segment Above, Below, Not clear, or Too small (under 30 stays), and used those labels to color the matrix.
+5. Added a bar chart with the overall rate as a baseline, slicers for destination and LOS, and a short takeaway.
+
+**Note:** The dashboard flags segments under 30 stays as "Too small." It does not include the extra caution flag for 30 to 99 stays that I used in Excel.
+
 ## Next steps
 
-- [ ] **Phase 2, SQL:** load the data, rebuild the same tables with queries (JOINs, `CASE WHEN`, `GROUP BY`), and check the totals against the Excel results (3,699 stays, 354 readmissions).
-- [ ] **Phase 3, Power BI:** build a dashboard with the destination-by-LOS matrix, flags for small segments, and a "follow up first" view.
 - [ ] Add a small ICD-9 lookup table for the pneumonia code group.
 - [ ] Add the CMS HRRP pneumonia benchmark for national context.
 - [ ] Optional: check whether the destination gap holds after accounting for age and prior visits.
@@ -132,7 +160,7 @@ Each rate comes from a limited number of stays, so it could shift by chance. Sma
 
 ## Skills practiced
 
-Defining a business question and KPIs, data cleaning, ICD code grouping, pivot tables, rates vs. counts, sample-size and margin-of-error checks, and writing findings and recommendations for a non-technical audience. SQL and Power BI are in progress.
+Defining a business question and KPIs, data cleaning, ICD code grouping, pivot tables, rates vs. counts, sample-size and margin-of-error checks, and writing findings and recommendations for a non-technical audience. SQL (SQLite: JOINs, CASE WHEN, GROUP BY, views) and Power BI (measures, conditional formatting, slicers).
 
 ## About
 
