@@ -153,9 +153,13 @@ I used the `pneumonia_clean` data from SQL to build a dashboard.
 ```
 ├── README.md
 ├── excel/
-│   └── pneumonia_readmission_analysis.xlsx   # data tab, Dest_Map, pivots, Results, action log
-├── sql/                                      # coming in Phase 2
-└── powerbi/                                  # coming in Phase 3
+│   └── pneumonia_readmission_analysis.xlsx
+├── sql/
+│   └── pneumonia_analysis.sql
+├── powerbi/
+│   └── pneumonia_readmissions.pbix
+└── images/
+    └── dashboard.png
 ```
 
 ## Skills practiced
